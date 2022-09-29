@@ -31,7 +31,7 @@ function check_local_changes {
 
     for project in "${projects[@]}"; do
         pushd "${repo_path}/${project}"
-        if ! git diff-index --quiet HEAD; then
+        if ! git diff --quiet HEAD; then
             error_exit "Local changes detected in: ${project}"
         fi
         popd
