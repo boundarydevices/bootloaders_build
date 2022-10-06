@@ -135,6 +135,11 @@ function warning {
     printf "\033[0;33mWARNING:\033[0m ${warning}\n\n"
 }
 
+function warning_exit {
+    warning "$1"
+    exit 0
+}
+
 function error {
     local error="$1"
     printf "\033[0;31mERROR:\033[0m ${error}\n\n"
