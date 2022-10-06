@@ -142,12 +142,12 @@ function commit_binaries {
     commit_msg=$(echo -e "${commit_title}${commit_body}")
     echo "${commit_msg}"
 
+    git add --all
+
     if [[ "${dry_run}" == true ]]; then
-        git add --all
         git commit --dry-run -s -m "${commit_msg}"
         git restore --staged .
     else
-        git add --all
         git commit --quiet -s -m "${commit_msg}"
     fi
     popd
