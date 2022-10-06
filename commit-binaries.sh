@@ -14,13 +14,14 @@ usage: $(basename "$0") [options]
 $ $(basename "$0") --from-repo=<repo root directory> --to-repo=<repo root directory> --to-project=<project sub-path>
 
 Options:
-  --from-repo     Absolute path to the source repo
-  --from-projects (OPTIONAL) space-separated list of relative source projects. Defaults to all
-  --to-repo       Absolute path to the destination repo
-  --to-project    Relative path in the destination repo where git commit is ran
-  --title-prefix  (OPTIONAL) commit message title prefix. Defaults to "generic"
-  --dry-run       (OPTIONAL) don't commit, pass --dry-run to git instead
-  --help          (OPTIONAL) display usage
+  --from-repo               Absolute path to the source repo
+  --from-projects           (OPTIONAL) space-separated list of relative source projects. Defaults to all
+  --to-repo                 Absolute path to the destination repo
+  --to-project              Relative path in the destination repo where git commit is ran
+  --title-prefix            (OPTIONAL) commit message title prefix. Defaults to "generic"
+  --dry-run                 (OPTIONAL) don't commit, pass --dry-run to git instead
+  --no-fail-on-empty-commit (OPTIONAL) return success if nothing to commit
+  --help                    (OPTIONAL) display usage
 
 Examples:
   $ $(basename "$0") --from-repo=/home/user/src/android-common-kernel --from-projects='common hikey-modules' \\
@@ -99,8 +100,9 @@ function commit_binaries {
     local to_project=""
     local title_prefix="generic"
     local dry_run=false
+    local no_fail_on_empty_commit=false
 
-    local opts_args="from-repo:,from-projects:,to-repo:,to-project:,title-prefix:,dry-run,help"
+    local opts_args="from-repo:,from-projects:,to-repo:,to-project:,title-prefix:,dry-run,no-fail-on-empty-commit,help"
     local opts=$(getopt -o '' -l "${opts_args}" -- "$@")
     eval set -- "${opts}"
 
@@ -112,6 +114,7 @@ function commit_binaries {
             --to-project) to_project="$2"; shift 2;;
             --title-prefix) title_prefix="$2"; shift 2;;
             --dry-run) dry_run=true; shift ;;
+            --no-fail-on-empty-commit) no_fail_on_empty_commit=true; shift ;;
             --help) usage; exit 0 ;;
             --) shift; break ;;
         esac
@@ -142,6 +145,9 @@ function commit_binaries {
     commit_msg=$(echo -e "${commit_title}${commit_body}")
     echo "${commit_msg}"
 
+    if [[ "${no_fail_on_empty_commit}" == true ]] && [ -z "$(git status --porcelain)" ]; then
+        warning_exit "nothing to commit"
+    fi
     git add --all
 
     if [[ "${dry_run}" == true ]]; then

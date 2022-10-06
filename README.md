@@ -149,13 +149,14 @@ usage: commit-binaries.sh [options]
 $ commit-binaries.sh --from-repo=<repo root directory> --to-repo=<repo root directory> --to-project=<project sub-path>
 
 Options:
-  --from-repo     Absolute path to the source repo
-  --from-projects (OPTIONAL) space-separated list of relative source projects. Defaults to all
-  --to-repo       Absolute path to the destination repo
-  --to-project    Relative path in the destination repo where git commit is ran
-  --title-prefix  (OPTIONAL) commit message title prefix. Defaults to "generic"
-  --dry-run       (OPTIONAL) don't commit, pass --dry-run to git instead
-  --help          (OPTIONAL) display usage
+  --from-repo               Absolute path to the source repo
+  --from-projects           (OPTIONAL) space-separated list of relative source projects. Defaults to all
+  --to-repo                 Absolute path to the destination repo
+  --to-project              Relative path in the destination repo where git commit is ran
+  --title-prefix            (OPTIONAL) commit message title prefix. Defaults to "generic"
+  --dry-run                 (OPTIONAL) don't commit, pass --dry-run to git instead
+  --no-fail-on-empty-commit (OPTIONAL) return success if nothing to commit
+  --help                    (OPTIONAL) display usage
 
 Examples:
   $ commit-binaries.sh --from-repo=/home/user/src/android-common-kernel --from-projects='common hikey-modules' \
