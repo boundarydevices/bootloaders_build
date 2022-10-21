@@ -32,6 +32,7 @@ function get_optee_flags {
     local mtk_plat=$(config_value "$1" plat)
     local flags=$(config_value "$1" optee.flags)
     local board=$(config_value "$1" optee.board)
+    local rpmb=$(config_value "$1" optee.rpmb)
     local mode="$2"
     local -n optee_flags_ref="$3"
 
@@ -51,7 +52,9 @@ function get_optee_flags {
             fi
 
             # RPMB
-            flags+=" CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y"
+            if [ "${rpmb}" != "False" ]; then
+                flags+=" CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y"
+            fi
 
             # AVB TA
             flags+=" CFG_IN_TREE_EARLY_TAS=avb/023f8f1a-292a-432b-8fc4-de8471358067"
