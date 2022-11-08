@@ -67,16 +67,20 @@ function display_commit_msg_header {
 }
 
 function commit_msg_body {
-    local remote_name=$1 && shift
     local from_repo=$1 && shift
     local projects=("$@")
 
+    local remote_name=""
     local remote_url=""
     local head=""
     local branch=""
 
     for project in "${projects[@]}"; do
         pushd "${from_repo}/${project}"
+
+        # Warning: the project must contain only one remote
+        remote_name=$(git remote)
+
         body+="- Project: ${project}:\n"
 
         remote_url=$(git remote get-url "${remote_name}")
@@ -133,7 +137,7 @@ function commit_binaries {
     check_local_changes "${from_repo}" $from_projects
 
     # commits message
-    local commit_body=$(commit_msg_body "aiot" $from_repo $from_projects)
+    local commit_body=$(commit_msg_body $from_repo $from_projects)
 
     local commit_title=""
     local commit_msg=""
