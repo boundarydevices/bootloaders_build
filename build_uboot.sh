@@ -64,6 +64,15 @@ function build_uboot {
         ln -snf "${config_root}/u-boot/${board}/board" "${UBOOT}/board/mediatek/${board}"
     fi
 
+    # create symlink to config dts
+    if [ -d "${config_root}/u-boot/${board}/dts" ]; then
+        pushd "${config_root}/u-boot/${board}/dts/"
+        for dts in *; do
+            ln -sf "${config_root}/u-boot/${board}/dts/${dts}" "${UBOOT}/arch/arm/dts/"
+        done
+        popd
+    fi
+
     # generate defconfig
     make "${mtk_defconfig}"
     merge_config "${mode}" "${board}" "${config_root}"
