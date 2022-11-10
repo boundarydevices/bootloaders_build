@@ -18,8 +18,8 @@ function merge_config {
     local mode="${1}"
     local board="${2}"
     local config_root="${3}"
-    local mode_fragment="${BUILD}/config/defconfig_fragment/uboot-${mode}.config"
-    local board_fragment="${config_root}/defconfig_fragment/uboot-${board}.config"
+    local mode_fragment="${BUILD}/config/u-boot/${mode}.config"
+    local board_fragment="${config_root}/u-boot/${board}.config"
     declare -a configs
 
     if [ -a "${mode_fragment}" ]; then
