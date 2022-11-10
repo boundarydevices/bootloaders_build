@@ -59,6 +59,11 @@ function build_uboot {
     aarch64_env
     export ARCH=arm64
 
+    # create symlink to config board
+    if [ -d "${config_root}/u-boot/${board}/board" ]; then
+        ln -snf "${config_root}/u-boot/${board}/board" "${UBOOT}/board/mediatek/${board}"
+    fi
+
     # generate defconfig
     make "${mtk_defconfig}"
     merge_config "${mode}" "${board}" "${config_root}"
