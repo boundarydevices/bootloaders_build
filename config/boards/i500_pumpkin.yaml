@@ -21,4 +21,4 @@ fip:
   log_level: 20
 
 android:
-  binaries_path: device/mediatek/common/mt8183/binaries/images/
+  binaries_path: device/mediatek/boards-binaries/i500_pumpkin
