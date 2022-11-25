@@ -22,4 +22,4 @@ fip:
   log_level: 20
 
 android:
-  binaries_path: device/mediatek/boards-binaries/i350_evk
+  binaries_path: device/mediatek/boards-binaries/i350_pumpkin
