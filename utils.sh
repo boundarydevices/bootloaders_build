@@ -31,6 +31,10 @@ function check_local_changes {
 
     for project in "${projects[@]}"; do
         pushd "${repo_path}/${project}"
+        # always run status before to trigger an index rebuild
+        # This is important when many files have a different mtime
+        # see: https://github.com/MestreLion/git-tools/issues/38#issuecomment-894182421
+        git status
         if ! git diff --quiet HEAD; then
             error_exit "Local changes detected in: ${project}"
         fi
