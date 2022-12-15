@@ -134,9 +134,7 @@ function main {
                 fi
             fi
 
-            if ! [ -d "${aosp}/${mtk_binaries_path}" ]; then
-                error_exit "cannot copy binaries, ${aosp}/${mtk_binaries_path} not found"
-            fi
+            ! [ -d "${aosp}/${mtk_binaries_path}" ] && mkdir -p "${aosp}/${mtk_binaries_path}"
 
             # Trusted Applications
             if [[ "${build}" == true ]] && [[ "${skip_ta}" == false ]]; then
