@@ -112,7 +112,7 @@ function main {
     # build configs
     local mtk_binaries_path=""
     local out_dir=""
-    declare -A commits_msg
+    declare -A commits_prefix_map
 
     check_local_changes "${ROOT}" "${PROJECTS_AIOT[@]}"
 
@@ -150,12 +150,12 @@ function main {
             cp -r "${out_dir}/"* "${aosp}/${mtk_binaries_path}"
         done
         commit_title_prefix=$(board_name ${mtk_config})
-        add_to_path_hashmap commits_msg "${aosp}/${mtk_binaries_path}" "${commit_title_prefix}"
+        add_to_path_hashmap commits_prefix_map "${aosp}/${mtk_binaries_path}" "${commit_title_prefix}"
     done
     popd
 
-    for abspath in "${!commits_msg[@]}"; do
-        commit_title_prefix="${commits_msg[${abspath}]}"
+    for abspath in "${!commits_prefix_map[@]}"; do
+        commit_title_prefix="${commits_prefix_map[${abspath}]}"
         # we need the project name for commit_binaries(), not the
         # full filepath
         to_project=${abspath#${aosp}/}
