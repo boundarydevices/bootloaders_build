@@ -113,6 +113,8 @@ function main {
     local mtk_binaries_path=""
     local out_dir=""
     declare -A commits_prefix_map
+    declare -A extra_projects_map
+    local extra_projects=""
 
     check_local_changes "${ROOT}" "${PROJECTS_AIOT[@]}"
 
@@ -151,21 +153,36 @@ function main {
         done
         commit_title_prefix=$(board_name ${mtk_config})
         add_to_path_hashmap commits_prefix_map "${aosp}/${mtk_binaries_path}" "${commit_title_prefix}"
+
+        # read extra projects
+        extra_projects=$(config_value "${mtk_config}" android.extra_projects)
+        if [ ! -z "${extra_projects}" ]; then
+            add_to_path_hashmap extra_projects_map "${aosp}/${mtk_binaries_path}" "${extra_projects}"
+        fi
     done
     popd
 
+    local from_projects=""
     for abspath in "${!commits_prefix_map[@]}"; do
         commit_title_prefix="${commits_prefix_map[${abspath}]}"
         # we need the project name for commit_binaries(), not the
         # full filepath
         to_project=${abspath#${aosp}/}
 
+        # build from-projects list
+        from_projects=("${PROJECTS_AIOT[@]}")
+
+        if [[ -v "extra_projects_map[${abspath}]" ]]; then
+            extra_projects=(${extra_projects_map[${abspath}]})
+            from_projects+=("${extra_projects[@]}")
+        fi
+
         if [ "${commit}" == true ]; then
-            commit_binaries --from-repo="${ROOT}" --from-projects="${PROJECTS_AIOT[*]}" \
+            commit_binaries --from-repo="${ROOT}" --from-projects="${from_projects[*]}" \
                             --to-repo="${aosp}" --to-project="${to_project}" \
                             --title-prefix="${commit_title_prefix}"
         else
-            commit_binaries --from-repo="${ROOT}" --from-projects="${PROJECTS_AIOT[*]}" \
+            commit_binaries --from-repo="${ROOT}" --from-projects="${from_projects[*]}" \
                             --to-repo="${aosp}" --to-project="${to_project}" \
                             --title-prefix="${commit_title_prefix}" \
                             --dry-run
