@@ -12,23 +12,23 @@ PROJECTS_AIOT=("arm-trusted-firmware" "build" "libbase-prebuilts" "libdram" "lk"
                "optee-os" "optee-ta/kmgk" "optee-ta/optee-otp" "optee-ta/optee_test"
                "u-boot")
 
-function add_commit_msg {
-    local -n commits_msg_ref="$1"
-    local title_prefix="$2"
-    local mtk_android_out="$3"
+function add_to_path_hashmap {
+    local -n hashmap_ref="$1"
+    local path="$2"
+    local hashmap_value="$3"
     local toplevel=""
-    local commits_msg_value=""
+    local current_value=""
 
-    pushd "${mtk_android_out}"
+    pushd "${path}"
     toplevel=$(git rev-parse --sq --show-toplevel)
-    if [[ -v "commits_msg_ref[${toplevel}]" ]]; then
-        commits_msg_value="${commits_msg_ref[${toplevel}]}"
-        if ! [[ ${commits_msg_value} =~ ${title_prefix} ]]; then
-            unset commits_msg_ref["${toplevel}"]
-            commits_msg_ref+=(["${toplevel}"]="${commits_msg_value}/${title_prefix}")
+    if [[ -v "hashmap_ref[${toplevel}]" ]]; then
+        current_value="${hashmap_ref[${toplevel}]}"
+        if ! [[ ${current_value} =~ ${hashmap_value} ]]; then
+            unset hashmap_ref["${toplevel}"]
+            hashmap_ref+=(["${toplevel}"]="${current_value}/${hashmap_value}")
         fi
     else
-        commits_msg_ref+=(["${toplevel}"]="${title_prefix}")
+        hashmap_ref+=(["${toplevel}"]="${hashmap_value}")
     fi
     popd
 }
@@ -150,7 +150,7 @@ function main {
             cp -r "${out_dir}/"* "${aosp}/${mtk_binaries_path}"
         done
         commit_title_prefix=$(board_name ${mtk_config})
-        add_commit_msg commits_msg "${commit_title_prefix}" "${aosp}/${mtk_binaries_path}"
+        add_to_path_hashmap commits_msg "${aosp}/${mtk_binaries_path}" "${commit_title_prefix}"
     done
     popd
 
