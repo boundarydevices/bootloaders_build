@@ -84,7 +84,8 @@ function check_env {
 }
 
 function config_value {
-    cat "$1" | shyaml --quiet get-value "$2"
+    local value=$(cat "$1" | shyaml --quiet get-value "$2")
+    echo "${value}"
 }
 
 function board_name {
