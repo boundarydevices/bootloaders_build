@@ -6,7 +6,7 @@ set -o pipefail
 
 SRC=$(dirname "$(readlink -e "$0")")
 source "${SRC}/secure.sh"
-source "${SRC}/build_libdram.sh"
+source "${SRC}/build_libatf.sh"
 source "${SRC}/utils.sh"
 
 ATF="${ROOT}/arm-trusted-firmware"
@@ -20,12 +20,12 @@ function clean_fip {
 }
 
 function build_fip {
+    local board=$(board_name "$1")
     local mtk_plat=$(config_value "$1" plat)
     local atf_project=$(config_value "$1" bl2.project)
     local mtk_cflags=$(config_value "$1" fip.cflags)
     local log_level=$(config_value "$1" fip.log_level)
-    local mtk_libdram_board=$(config_value "$1" libdram.board)
-    local libdram_a="${LIBDRAM}/build-${mtk_libdram_board}/src/${mtk_plat}/libdram.a"
+    local libatf_a="${LIBATF}/build-${board}/src/${mtk_plat}/libatf.a"
     local libbase_a="${ROOT}/libbase-prebuilts/${mtk_plat}/libbase.a"
     local bl32_bin="$2"
     local bl33_bin="$3"
@@ -56,10 +56,10 @@ function build_fip {
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
 
     if [[ "${clean}" == true ]]; then
-        build_libdram "$1" true false "${mode}"
+        build_libatf "$1" true false "${mode}"
     else
-        # check if libdram has been compiled
-        ! [ -a "${libdram_a}" ] && build_libdram "$1" false false "${mode}"
+        # check if libatf has been compiled
+        ! [ -a "${libatf_a}" ] && build_libatf "$1" false false "${mode}"
     fi
 
     pushd "${ROOT}/${atf_project}"
@@ -68,7 +68,7 @@ function build_fip {
     arm-none_env
 
     make E=0 CFLAGS="${mtk_cflags}" PLAT="${mtk_plat}" BL32="${bl32_bin}" BL33="${bl33_bin}" \
-         LIBDRAM="${libdram_a}" LIBBASE="${libbase_a}" ${extra_flags} SPD=opteed \
+         BL31_LIBS="${libatf_a} ${libbase_a}" ${extra_flags} SPD=opteed \
          NEED_BL32=yes NEED_BL33=yes bl31 fip
 
     cp "${fip_out_dir}/fip.bin" "${out_dir}/${fip_bin}"

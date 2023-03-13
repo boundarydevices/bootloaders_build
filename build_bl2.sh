@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 SRC=$(dirname "$(readlink -e "$0")")
-source "${SRC}/build_libdram.sh"
+source "${SRC}/build_libatf.sh"
 source "${SRC}/secure.sh"
 source "${SRC}/utils.sh"
 
@@ -30,11 +30,11 @@ function bl2_create_image {
 }
 
 function build_bl2 {
+    local board=$(board_name "$1")
     local mtk_plat=$(config_value "$1" plat)
     local atf_project=$(config_value "$1" bl2.project)
     local mtk_cflags=$(config_value "$1" bl2.cflags)
-    local mtk_libdram_board=$(config_value "$1" libdram.board)
-    local libdram_a="${LIBDRAM}/build-${mtk_libdram_board}/src/${mtk_plat}/libdram.a"
+    local libatf_a="${LIBATF}/build-${board}/src/${mtk_plat}/libatf.a"
     local libbase_a="${ROOT}/libbase-prebuilts/${mtk_plat}/libbase.a"
     local clean="${2:-false}"
     local mode="${3:-release}"
@@ -63,10 +63,10 @@ function build_bl2 {
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
 
     if [[ "${clean}" == true ]]; then
-        build_libdram "$1" true false "${mode}"
+        build_libatf "$1" true false "${mode}"
     else
-        # check if libdram has been compiled
-        ! [ -a "${libdram_a}" ] && build_libdram "$1" false false "${mode}"
+        # check if libatf has been compiled
+        ! [ -a "${libatf_a}" ] && build_libatf "$1" false false "${mode}"
     fi
 
     pushd "${ROOT}/${atf_project}"
@@ -74,8 +74,10 @@ function build_bl2 {
 
     aarch64_env
 
-    make E=0 CFLAGS="${mtk_cflags}" PLAT="${mtk_plat}" LIBDRAM="${libdram_a}" \
-         LIBBASE="${libbase_a}" ${extra_flags} bl2
+    make E=0 CFLAGS="${mtk_cflags}" PLAT="${mtk_plat}" \
+         BL2_LDFLAGS="--whole-archive" \
+         BL2_LIBS="${libatf_a} ${libbase_a}" \
+         ${extra_flags} bl2
 
     pushd "${bl2_out_dir}"
     if [[ "${mode}" == "factory" ]] && [ -n "${secure_config}" ]; then

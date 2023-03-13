@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 SRC=$(dirname "$(readlink -e "$0")")
-source "${SRC}/build_libdram.sh"
+source "${SRC}/build_libatf.sh"
 source "${SRC}/secure.sh"
 source "${SRC}/utils.sh"
 
@@ -19,10 +19,10 @@ function clean_lk {
 }
 
 function build_lk {
+    local board=$(board_name "$1")
     local mtk_plat=$(config_value "$1" plat)
     local mtk_board=$(config_value "$1" lk.board)
-    local mtk_libdram_board=$(config_value "$1" libdram.board)
-    local libdram_a="${LIBDRAM}/build-${mtk_libdram_board}-lk/src/${mtk_plat}/libdram.a"
+    local libatf_a="${LIBATF}/build-${board}-lk/src/${mtk_plat}/libatf.a"
     local libbase_a="${ROOT}/libbase-prebuilts/${mtk_plat}/libbase-lk.a"
     local clean="${2:-false}"
     local mode="${3:-release}"
@@ -40,10 +40,10 @@ function build_lk {
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
 
     if [[ "${clean}" == true ]]; then
-        build_libdram "$1" true true "${mode}"
+        build_libatf "$1" true true "${mode}"
     else
-        # check if libdram has been compiled
-        ! [ -a "${libdram_a}" ] && build_libdram "$1" false true "${mode}"
+        # check if libatf has been compiled
+        ! [ -a "${libatf_a}" ] && build_libatf "$1" false true "${mode}"
     fi
 
     pushd "${LK}"
@@ -52,8 +52,8 @@ function build_lk {
     aarch64_env
 
     make ARCH_arm64_TOOLCHAIN_PREFIX=${CROSS_COMPILE} CFLAGS="" ${extra_flags} \
-         GLOBAL_CFLAGS="-mstrict-align -mno-outline-atomics" SECURE_BOOT_ENABLE=no LIBGCC="" \
-         LIBDRAM="${libdram_a}" LIBBASE="${libbase_a}" "${mtk_board}"
+         GLOBAL_CFLAGS="-mstrict-align -mno-outline-atomics" SECURE_BOOT_ENABLE=no \
+	 LIBGCC="${libatf_a} ${libbase_a}" "${mtk_board}"
 
     cp "build-${mtk_board}/lk.bin" "${out_dir}/lk-${mode}.bin"
     if [[ "${mode}" == "factory" ]]; then

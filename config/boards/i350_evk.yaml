@@ -4,9 +4,6 @@ bl2:
   project: arm-trusted-firmware
   cflags: -DNEED_BL32
 
-libdram:
-  board: mt8365-sb35
-
 lk:
   board: mt8365-pumpkin
 

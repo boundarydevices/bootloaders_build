@@ -4,9 +4,6 @@ bl2:
   project: arm-trusted-firmware
   cflags: -DNEED_BL32
 
-libdram:
-  board: mt8183-pumpkin
-
 lk:
   board: mt8183-evb
 
