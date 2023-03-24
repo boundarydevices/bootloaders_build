@@ -64,7 +64,8 @@ function build_libatf {
     if [[ "${build_for_lk}" == true ]]; then
         extra_flags="-Dlk=true"
     fi
-    meson "${mtk_build}" -Dboard="${board}" ${extra_flags} --cross-file "${SRC}/config/meson.cross"
+    meson "${mtk_build}" -Dboard="${board}" -Datf_root="${ROOT}/arm-trusted-firmware" \
+          ${extra_flags} --cross-file "${SRC}/config/meson.cross"
     ninja -C "${mtk_build}"
 
     clear_vars
