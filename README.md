@@ -21,11 +21,11 @@ Options:
   --help     (OPTIONAL) display usage
 ```
 
-## Build libdram
+## Build libatf
 ``` {.sh}
-usage: build_libdram.sh [options]
+usage: build_libatf.sh [options]
 
-$ build_libdram.sh --config=i500-pumpkin.yaml
+$ build_libatf.sh --config=i500-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
