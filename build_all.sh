@@ -35,7 +35,7 @@ function build_all {
 
     # fip
     build_fip "$1" "${out_dir}/tee-${mode}.bin" "${out_dir}/u-boot-${mode}.bin" \
-              "fip_${mode}.bin" "${clean}" "${mode}"
+              "fip-${mode}.bin" "${clean}" "${mode}"
 
     # secure package
     if [[ "${mode}" == "factory" ]]; then
