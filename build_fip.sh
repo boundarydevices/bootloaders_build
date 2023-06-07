@@ -82,7 +82,7 @@ function usage {
     cat <<DELIM__
 usage: $(basename "$0") [options]
 
-$ $(basename "$0") --config=i500-pumpkin.yaml --bl32=tee.bin --bl33=u-boot.bin --output=fip-test.bin
+$ $(basename "$0") --config=i350-pumpkin.yaml --bl32=tee.bin --bl33=u-boot.bin --output=fip-test.bin
 
 Options:
   --config   Mediatek board config file

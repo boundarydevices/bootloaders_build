@@ -12,7 +12,7 @@ $ pip3 install pycryptodome pyelftools shyaml --user
 ``` {.sh}
 usage: build_bl2.sh [options]
 
-$ build_bl2.sh --config=i500-pumpkin.yaml
+$ build_bl2.sh --config=i350-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
@@ -25,7 +25,7 @@ Options:
 ``` {.sh}
 usage: build_libatf.sh [options]
 
-$ build_libatf.sh --config=i500-pumpkin.yaml
+$ build_libatf.sh --config=i350-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
@@ -38,7 +38,7 @@ Options:
 ``` {.sh}
 usage: build_lk.sh [options]
 
-$ build_lk.sh --config=i500-pumpkin.yaml
+$ build_lk.sh --config=i350-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
@@ -51,7 +51,7 @@ Options:
 ``` {.sh}
 usage: build_uboot.sh [options]
 
-$ build_uboot.sh --config=i500-pumpkin.yaml
+$ build_uboot.sh --config=i350-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
@@ -64,7 +64,7 @@ Options:
 ``` {.sh}
 usage: build_optee.sh [options]
 
-$ build_optee.sh --config=i500-pumpkin.yaml
+$ build_optee.sh --config=i350-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
@@ -77,7 +77,7 @@ Options:
 ``` {.sh}
 usage: build_fip.sh [options]
 
-$ build_fip.sh --config=i500-pumpkin.yaml --bl32=tee.bin --bl33=u-boot.bin --output=fip-test.bin
+$ build_fip.sh --config=i350-pumpkin.yaml --bl32=tee.bin --bl33=u-boot.bin --output=fip-test.bin
 
 Options:
   --config   Mediatek board config file
@@ -93,7 +93,7 @@ Options:
 ``` {.sh}
 usage: build_all.sh [options]
 
-$ build_all.sh --config=i500-pumpkin.yaml
+$ build_all.sh --config=i350-pumpkin.yaml
 
 Options:
   --config   Mediatek board config file
