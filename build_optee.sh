@@ -99,10 +99,12 @@ function build_android_ta {
 
     # xtest
     android_ta_paths+=("${xtest}/aes_perf/e626662e-c0e2-485c-b8c8-09fbce6edf3d.ta")
+    android_ta_paths+=("${xtest}/bti_test/3616069b-504d-4044-9497-feb84a073a14.ta")
     android_ta_paths+=("${xtest}/concurrent/e13010e0-2ae1-11e5-896a-0002a5d5c51b.ta")
     android_ta_paths+=("${xtest}/concurrent_large/5ce0c432-0ab0-40e5-a056-782ca0e6aba2.ta")
     android_ta_paths+=("${xtest}/create_fail_test/c3f6e2c0-3548-11e1-b86c-0800200c9a66.ta")
     android_ta_paths+=("${xtest}/crypt/cb3e5ba0-adf1-11e0-998b-0002a5d5c51b.ta")
+    android_ta_paths+=("${xtest}/hash_perf/614789f2-39c0-4ebf-b235-92b32ac107ed.ta")
     android_ta_paths+=("${xtest}/large/25497083-a58a-4fc5-8a72-1ad7b69b8562.ta")
     android_ta_paths+=("${xtest}/miss/528938ce-fc59-11e8-8eb2-f2801f1b9fd1.ta")
     android_ta_paths+=("${xtest}/os_test_lib/ffd2bded-ab7d-4988-95ee-e4962fff7154.ta")
@@ -110,13 +112,14 @@ function build_android_ta {
     android_ta_paths+=("${xtest}/os_test/5b9e0e40-2636-11e1-ad9e-0002a5d5c51b.ta")
     android_ta_paths+=("${xtest}/rpc_test/d17f73a0-36ef-11e1-984a-0002a5d5c51b.ta")
     android_ta_paths+=("${xtest}/sdp_basic/12345678-5b69-11e4-9dbb-101f74f00099.ta")
-    android_ta_paths+=("${xtest}/sha_perf/614789f2-39c0-4ebf-b235-92b32ac107ed.ta")
     android_ta_paths+=("${xtest}/sims/e6a33ed4-562b-463a-bb7e-ff5e15a493c8.ta")
     android_ta_paths+=("${xtest}/sims_keepalive/a4c04d50-f180-11e8-8eb2-f2801f1b9fd1.ta")
     android_ta_paths+=("${xtest}/socket/873bcd08-c2c3-11e6-a937-d0bf9c45c61c.ta")
     android_ta_paths+=("${xtest}/storage/b689f2a7-8adf-477a-9f99-32e90c0ad0a2.ta")
     android_ta_paths+=("${xtest}/storage2/731e279e-aafb-4575-a771-38caa6f0cca6.ta")
     android_ta_paths+=("${xtest}/storage_benchmark/f157cda0-550c-11e5-a6fa-0002a5d5c51b.ta")
+    android_ta_paths+=("${xtest}/subkey1/5c206987-16a3-59cc-ab0f-64b9cfc9e758.ta")
+    android_ta_paths+=("${xtest}/subkey2/a720ccbb-51da-417d-b82e-e5445d474a7a.ta")
     android_ta_paths+=("${xtest}/supp_plugin/380231ac-fb99-47ad-a689-9e017eb6e78a.ta")
     android_ta_paths+=("${xtest}/tpm_log_test/ee90d523-90ad-46a0-859d-8eea0b150086.ta")
 
