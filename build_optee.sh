@@ -61,6 +61,7 @@ function get_optee_flags {
     esac
 
     flags+=" CFG_TZDRAM_START=0x43200000 CFG_TZDRAM_SIZE=0x00a00000"
+    flags+=" CFG_HMAC_64_1024_RANGE=y"
 
     if [ -n "${board}" ]; then
         flags+=" PLATFORM=mediatek-${board}"
