@@ -35,16 +35,10 @@ function build_libatf {
     local board=$(board_name "$1")
     local mtk_build="build-${board}"
     local clean="${2:-false}"
-    local build_for_lk="$3"
-    local mode="${4:-release}"
+    local mode="${3:-release}"
     local libatf_customer=$(get_libatf_customer "$1" "${board}")
     local build="libatf"
     local extra_flags=""
-
-    if [[ "${build_for_lk}" == true ]]; then
-        mtk_build="build-${board}-lk"
-        build="libatf lk"
-    fi
 
     display_current_build "$1" "${build}" "${mode}"
 
@@ -61,9 +55,6 @@ function build_libatf {
 
     aarch64_env
 
-    if [[ "${build_for_lk}" == true ]]; then
-        extra_flags="-Dlk=true"
-    fi
     meson "${mtk_build}" -Dboard="${board}" -Datf_root="${ROOT}/arm-trusted-firmware" \
           ${extra_flags} --cross-file "${SRC}/config/meson.cross"
     ninja -C "${mtk_build}"

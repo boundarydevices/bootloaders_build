@@ -34,19 +34,6 @@ Options:
   --help     (OPTIONAL) display usage
 ```
 
-## Build little kernel
-``` {.sh}
-usage: build_lk.sh [options]
-
-$ build_lk.sh --config=i350-pumpkin.yaml
-
-Options:
-  --config   Mediatek board config file
-  --clean    (OPTIONAL) clean before build
-  --mode     (OPTIONAL) [release|debug|factory] mode (default: release)
-  --help     (OPTIONAL) display usage
-```
-
 ## Build uboot
 ``` {.sh}
 usage: build_uboot.sh [options]

@@ -4,9 +4,6 @@ bl2:
   project: arm-trusted-firmware
   cflags: -DNEED_BL32 -DBOARD_i350_pumpkin
 
-lk:
-  board: mt8365-pumpkin
-
 optee:
   board: mt8175
   flags: CFG_ARM64_core=y ta-targets=ta_arm64 CFG_DRAM_SIZE=0x80000000 CFG_CORE_HEAP_SIZE=131072

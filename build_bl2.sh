@@ -63,10 +63,10 @@ function build_bl2 {
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
 
     if [[ "${clean}" == true ]]; then
-        build_libatf "$1" true false "${mode}"
+        build_libatf "$1" true "${mode}"
     else
         # check if libatf has been compiled
-        ! [ -a "${libatf_a}" ] && build_libatf "$1" false false "${mode}"
+        ! [ -a "${libatf_a}" ] && build_libatf "$1" false "${mode}"
     fi
 
     pushd "${ROOT}/${atf_project}"
