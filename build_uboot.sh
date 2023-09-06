@@ -98,49 +98,6 @@ function build_uboot {
     popd
 }
 
-# main
-function usage {
-    cat <<DELIM__
-usage: $(basename "$0") [options]
-
-$ $(basename "$0") --config=i500-pumpkin.yaml
-
-Options:
-  --config   Mediatek board config file
-  --clean    (OPTIONAL) clean before build
-  --mode     (OPTIONAL) [release|debug|factory] mode (default: release)
-  --help     (OPTIONAL) display usage
-DELIM__
-}
-
-function main {
-    local clean=false
-    local config=""
-    local mode="release"
-
-    local opts_args="clean,config:,mode:,help"
-    local opts=$(getopt -o '' -l "${opts_args}" -- "$@")
-    eval set -- "${opts}"
-
-    while true; do
-        case "$1" in
-            --config) config=$(find_path "$2"); shift 2 ;;
-            --clean) clean=true; shift ;;
-            --mode) mode="$2"; shift 2 ;;
-            --help) usage; exit 0 ;;
-            --) shift; break ;;
-        esac
-    done
-
-    # check arguments
-    [ -z "${config}" ] && error_usage_exit "Cannot find board config file"
-    ! [[ " ${MODES[*]} " =~ " ${mode} " ]] && error_usage_exit "${mode} mode not supported"
-
-    # build uboot
-    check_env
-    build_uboot "${config}" "${clean}" "${mode}"
-}
-
 if [ "$0" = "$BASH_SOURCE" ]; then
     main "$@"
 fi
