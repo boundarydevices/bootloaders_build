@@ -200,6 +200,7 @@ function sign_bl2_image {
     local secure_config="$1"
     local input="$2"
     local output="$3"
+    local output_dir=$(dirname "${output}")
     local pbp_py="${SECURE_TOOLS}/sign-image_v2/pbp.py"
     local hdr_tool_py="${SECURE_TOOLS}/secure_chip_tools/dev-info-hdr-tool.py"
     local key_ini="${SECURE_TOOLS}/configs/key.ini"
@@ -215,7 +216,7 @@ function sign_bl2_image {
 
     python "${pbp_py}" -i key.ini -g "${pl_gfh}" -func sign -o "${output}" "${input}"
     python "${hdr_tool_py}" emmc "${output}" "${output}"
-    rm key.ini
+    rm key.ini "${output_dir}/sig_size.txt"
 
     popd
 }
