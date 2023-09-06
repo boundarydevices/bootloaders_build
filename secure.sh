@@ -10,14 +10,15 @@ source "${SRC}/utils.sh"
 SECURE_TOOLS="${ROOT}/mtk-secure-boot-tools"
 KEYS="${BUILD}/.keys"
 
-# Secure: BL1 to BL2
+# Secure: BL1 to U-Boot SPL
 EFUSE_KEY="efuse.key"
 DA_KEY="da.key"
 MTK_DA_SIGNED="MTK_AllInOne_DA_signed.bin"
 AUTH_KEY="auth_sv5.auth"
 
-# Secure: BL2 to fip images
-ROT_KEY="rot_key.key"
+# Secure: U-Boot SPL to bootloaders image
+BOOTLOADERS_KEY="bootloaders.key"
+BOOTLOADERS_CRT="bootloaders.crt"
 
 # Trusted Applications
 TA_KEY="ta.key"
@@ -46,27 +47,35 @@ function get_secure_config {
     echo "${secure_config}"
 }
 
-function generate_rot_key {
+function generate_bootloaders_key {
     ! [ -d "${KEYS}" ] && mkdir -p "${KEYS}"
-    openssl genrsa -out "${KEYS}/${ROT_KEY}" 2048
+
+    openssl genpkey -algorithm RSA -out "${KEYS}/${BOOTLOADERS_KEY}" \
+            -pkeyopt rsa_keygen_bits:2048 -pkeyopt rsa_keygen_pubexp:65537
 }
 
-function get_rot_key {
-    local rot_key_config=$(config_value "$1" secure.rot_key)
-    local -n rot_key_ref="$2"
+function get_bootloaders_key_dir {
+    local bootloaders_key_dir_config=$(config_value "$1" secure.bootloaders_key_dir)
+    local -n bootloaders_key_dir_ref="$2"
 
-    if [ -n "${rot_key_config}" ]; then
-        if [ -a "${rot_key_config}" ]; then
-            rot_key_ref="${rot_key_config}"
+    if [ -n "${bootloaders_key_dir_config}" ]; then
+        if [ -a "${bootloaders_key_dir_config}/${BOOTLOADERS_KEY}" ]; then
+            bootloaders_key_dir_ref="${bootloaders_key_dir_config}"
         else
-            error_exit "ROT key not found: ${rot_key_config}"
+            error_exit "Bootloaders key not found: ${bootloaders_key_dir_config}/${BOOTLOADERS_KEY}"
         fi
     else
-        if ! [ -a "${KEYS}/${ROT_KEY}" ]; then
-            echo "No ROT key found, generate new one ..."
-            generate_rot_key
+        if ! [ -a "${KEYS}/${BOOTLOADERS_KEY}" ]; then
+            echo "No bootloaders key found, generate new one ..."
+            generate_bootloaders_key
         fi
-        rot_key_ref="${KEYS}/${ROT_KEY}"
+        bootloaders_key_dir_ref="${KEYS}"
+    fi
+
+    if ! [ -a "${bootloaders_key_dir_ref}/${BOOTLOADERS_CRT}" ]; then
+        openssl req -batch -new -x509 \
+                -key "${bootloaders_key_dir_ref}/${BOOTLOADERS_KEY}" \
+                -out "${bootloaders_key_dir_ref}/${BOOTLOADERS_CRT}"
     fi
 }
 
@@ -196,7 +205,7 @@ function daa_supported {
     [ -a "${toolauth_gfh_config_pss}" ] && [ -a "${bbchips_pss}" ]
 }
 
-function sign_bl2_image {
+function sign_mmcboot {
     local secure_config="$1"
     local input="$2"
     local output="$3"
@@ -221,10 +230,10 @@ function sign_bl2_image {
     popd
 }
 
-function sign_lk_image {
+function sign_da {
     local input="$1"
     local output="$2"
-    local input_digest="lk_digest"
+    local input_digest="da_digest"
 
     check_da_key
 
@@ -344,10 +353,11 @@ function generate_secure_package {
     pushd "${KEYS}"
     [ -a "${package}" ] && rm "${package}"
 
-    # add Root Of Trust key
-    local rot_key=""
-    get_rot_key "$1" rot_key
-    zip -ju "${package}" "${rot_key}"
+    # add bootloaders key and crt
+    local bootloaders_key_dir=""
+    get_bootloaders_key_dir "$1" bootloaders_key_dir
+    zip -ju "${package}" "${bootloaders_key_dir}/bootloaders.key" \
+                         "${bootloaders_key_dir}/bootloaders.crt"
 
     # add Trusted Applications keys
     local ta_key=""

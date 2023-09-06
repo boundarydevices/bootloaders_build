@@ -1,19 +1,12 @@
 plat: mt8365
 
-bl2:
-  project: arm-trusted-firmware
-  cflags: -DNEED_BL32
-
 optee:
   board: mt8175
   flags: CFG_ARM64_core=y ta-targets=ta_arm64 CFG_DRAM_SIZE=0xc0000000 CFG_CORE_HEAP_SIZE=131072
 
 uboot:
+  spl_defconfig: mt8365_pumpkin_android_spl_defconfig
   defconfig: mt8365_pumpkin_android_defconfig
-
-fip:
-  cflags: -DNEED_BL32
-  log_level: 20
 
 android:
   binaries_path: device/mediatek/boards-binaries/i350_evk

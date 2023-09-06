@@ -5,10 +5,9 @@ set -u
 set -o pipefail
 
 SRC=$(dirname "$(readlink -e "$0")")
-source "${SRC}/build_bl2.sh"
-source "${SRC}/build_fip.sh"
-source "${SRC}/build_optee.sh"
-source "${SRC}/build_uboot.sh"
+source "${SRC}/build_bootloaders.sh"
+source "${SRC}/build_da.sh"
+source "${SRC}/build_mmcboot.sh"
 source "${SRC}/utils.sh"
 
 function build_all {
@@ -20,18 +19,14 @@ function build_all {
         rm -rf "${out_dir}"
     fi
 
-    # bl2
-    build_bl2 "$@"
+    # Download Agent (DA)
+    build_da "$@"
 
-    # uboot
-    build_uboot "$1" "$2" "$3"
+    # MMC BOOT
+    build_mmcboot "$@"
 
-    # optee
-    build_optee "$@"
-
-    # fip
-    build_fip "$1" "${out_dir}/tee-${mode}.bin" "${out_dir}/u-boot-${mode}.bin" \
-              "fip-${mode}.bin" "${clean}" "${mode}"
+    # Bootloaders: BL31, OP-TEE, U-Boot
+    build_bootloaders "$@"
 
     # secure package
     if [[ "${mode}" == "factory" ]]; then

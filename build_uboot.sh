@@ -42,7 +42,6 @@ function build_uboot {
     local mode="${3:-release}"
     local out_dir=$(out_dir "$1" "${mode}")
     local mtk_defconfig=$(config_value "$1" uboot.defconfig)
-    local uboot_out_bin="${out_dir}/u-boot-${mode}.bin"
 
     display_current_build "$1" "uboot" "${mode}"
 
@@ -91,7 +90,7 @@ function build_uboot {
     make -j"$(nproc)"
 
     ./scripts/get_default_envs.sh > "${out_dir}/u-boot-initial-${mode}-env"
-    cp u-boot.bin "${uboot_out_bin}"
+    cp u-boot.bin "${out_dir}"
 
     unset ARCH
     clear_vars

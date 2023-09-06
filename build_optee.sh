@@ -180,7 +180,7 @@ function build_optee {
     # build tee binary
     make -j"$(nproc)" ${optee_flags} all
 
-    cp out/arm-plat-mediatek/core/tee.bin "${out_dir}/tee-${mode}.bin"
+    cp out/arm-plat-mediatek/core/tee.bin "${out_dir}/tee.bin"
 
     clear_vars
     popd
