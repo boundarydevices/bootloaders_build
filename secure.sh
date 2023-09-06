@@ -11,21 +11,21 @@ SECURE_TOOLS="${ROOT}/mtk-secure-boot-tools"
 KEYS="${BUILD}/.keys"
 
 # Secure: BL1 to BL2
-EFUSE_KEY="efuse.pem"
-DA_KEY="da.pem"
+EFUSE_KEY="efuse.key"
+DA_KEY="da.key"
 MTK_DA_SIGNED="MTK_AllInOne_DA_signed.bin"
 AUTH_KEY="auth_sv5.auth"
 
 # Secure: BL2 to fip images
-ROT_KEY="rot_key.pem"
+ROT_KEY="rot_key.key"
 
 # Trusted Applications
-TA_KEY="ta.pem"
-TA_PUB_KEY="ta_pub.pem"
+TA_KEY="ta.key"
+TA_PUB_KEY="ta_pub.key"
 
 # Android Verified Boot (AVB)
-AVB_KEY="avb.pem"
-AVB_PUB_KEY="avb_pub.pem"
+AVB_KEY="avb.key"
+AVB_PUB_KEY="avb_pub.key"
 
 function get_secure_config {
     local board=$(board_name "$1")
