@@ -8,7 +8,7 @@ SRC=$(dirname "$(readlink -e "$0")")
 source "${SRC}/build_all.sh"
 source "${SRC}/commit-binaries.sh"
 
-PROJECTS_AIOT=("arm-trusted-firmware" "build" "libbase-prebuilts" "libatf"
+PROJECTS_AIOT=("arm-trusted-firmware" "build" "ddr-loader" "libatf" "libbase-prebuilts"
                "optee-os" "optee-ta/kmgk" "optee-ta/optee-otp" "optee-ta/optee_test"
                "u-boot")
 
