@@ -34,6 +34,8 @@ function build_ddr_loader {
 
     display_current_build "$1" "ddr-loader" "${mode}"
 
+    ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
+
     if [[ "${clean}" == true ]]; then
         build_libatf "$1" true "${mode}"
     else

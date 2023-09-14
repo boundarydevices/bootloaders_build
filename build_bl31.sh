@@ -31,6 +31,8 @@ function build_bl31 {
 
     display_current_build "$1" "BL31" "${mode}"
 
+    ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
+
     bl31_flags+=" E=0"
     bl31_flags+=" PLAT=${mtk_plat}"
     bl31_flags+=" NEED_BL32=yes SPD=opteed"
