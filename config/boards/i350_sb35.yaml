@@ -1,5 +1,9 @@
 plat: mt8365
 
+mmcboot:
+  ddr_size_max: 122880 # 120 Ko
+  spl_size_max: 133120 # 130 Ko
+
 optee:
   board: mt8175
   flags: CFG_ARM64_core=y ta-targets=ta_arm64 CFG_DRAM_SIZE=0x80000000 CFG_CORE_HEAP_SIZE=131072

@@ -15,6 +15,7 @@ function mmcboot_create_factory_binary {
     local secure_config=$(get_secure_config "$1")
     local mode="$2"
     local out_dir=$(out_dir "$1" "${mode}")
+    local spl_size_max=$(config_value "$1" mmcboot.spl_size_max)
     local mmcboot_bin="${out_dir}/mmcboot-${mode}.bin"
     local ddr_loader_bin="${out_dir}/ddr-loader.bin"
     local uboot_spl_nodtb_out_bin="${out_dir}/u-boot-spl-nodtb.bin"
@@ -35,7 +36,7 @@ function mmcboot_create_factory_binary {
 
     # create U-Boot SPL
     cat "${uboot_spl_nodtb_out_bin}" "${uboot_spl_dtb_out_bin}" > "${uboot_spl_out_bin}"
-    truncate --size="${UBOOT_SPL_SIZE_MAX}" "${uboot_spl_out_bin}"
+    truncate --size="${spl_size_max}" "${uboot_spl_out_bin}"
     rm "${uboot_spl_nodtb_out_bin}" "${uboot_spl_dtb_out_bin}"
 
     # create mmcboot

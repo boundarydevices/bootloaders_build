@@ -8,7 +8,6 @@ SRC=$(dirname "$(readlink -e "$0")")
 source "${SRC}/utils.sh"
 
 UBOOT="${ROOT}/u-boot"
-UBOOT_SPL_SIZE_MAX=$((130 * 1024)) # 130 Ko
 
 function clean_uboot_spl {
     make mrproper
@@ -60,6 +59,7 @@ function build_uboot_spl {
     local clean="$2"
     local mode="$3"
     local da="$4"
+    local spl_size_max=$(config_value "$1" mmcboot.spl_size_max)
     local mtk_spl_defconfig=$(config_value "$1" uboot.spl_defconfig)
     local uboot_spl_out_bin="${UBOOT}/spl/u-boot-spl.bin"
     local uboot_spl_size=0
@@ -99,8 +99,8 @@ function build_uboot_spl {
 
     # check and truncate uboot spl size
     uboot_spl_size=$(stat --printf="%s" "${uboot_spl_out_bin}")
-    if (( uboot_spl_size > UBOOT_SPL_SIZE_MAX)); then
-        error_exit "U-Boot SPL size exceed the limit: ${uboot_spl_size} > ${UBOOT_SPL_SIZE_MAX}"
+    if (( uboot_spl_size > spl_size_max)); then
+        error_exit "U-Boot SPL size exceed the limit: ${uboot_spl_size} > ${spl_size_max}"
     fi
 
     unset ARCH
