@@ -37,13 +37,14 @@ function merge_config {
 
 function build_uboot {
     local config_root=$(config_root "$1")
-    local board=$(board_name "$1")
+    local uboot_board=$(config_value "$1" uboot.board)
+    local board="${uboot_board:-$(board_name "$1")}"
     local clean="${2:-false}"
     local mode="${3:-release}"
     local out_dir=$(out_dir "$1" "${mode}")
     local mtk_defconfig=$(config_value "$1" uboot.defconfig)
 
-    display_current_build "$1" "uboot" "${mode}"
+    display_current_build "${board}" "uboot" "${mode}"
 
     if [ -z "${mtk_defconfig}" ]; then
         echo "uboot: skip build, defconfig not provided"
