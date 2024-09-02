@@ -99,13 +99,12 @@ function build_android_ta {
     android_ta_paths+=("${kmgk}/keymaster/ta/dba51a17-0563-11e7-93b1-6fa7b0071a51.ta")
 
     # xtest
-    android_ta_paths+=("${xtest}/aes_perf/e626662e-c0e2-485c-b8c8-09fbce6edf3d.ta")
     android_ta_paths+=("${xtest}/bti_test/3616069b-504d-4044-9497-feb84a073a14.ta")
     android_ta_paths+=("${xtest}/concurrent/e13010e0-2ae1-11e5-896a-0002a5d5c51b.ta")
     android_ta_paths+=("${xtest}/concurrent_large/5ce0c432-0ab0-40e5-a056-782ca0e6aba2.ta")
     android_ta_paths+=("${xtest}/create_fail_test/c3f6e2c0-3548-11e1-b86c-0800200c9a66.ta")
     android_ta_paths+=("${xtest}/crypt/cb3e5ba0-adf1-11e0-998b-0002a5d5c51b.ta")
-    android_ta_paths+=("${xtest}/hash_perf/614789f2-39c0-4ebf-b235-92b32ac107ed.ta")
+    android_ta_paths+=("${xtest}/crypto_perf/02a42f43-d8b7-4a57-aa4d-87bd9b5587cb.ta")
     android_ta_paths+=("${xtest}/large/25497083-a58a-4fc5-8a72-1ad7b69b8562.ta")
     android_ta_paths+=("${xtest}/miss/528938ce-fc59-11e8-8eb2-f2801f1b9fd1.ta")
     android_ta_paths+=("${xtest}/os_test_lib/ffd2bded-ab7d-4988-95ee-e4962fff7154.ta")
