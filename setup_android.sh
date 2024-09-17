@@ -86,7 +86,7 @@ function main {
         fi
 
         # detect remote: [aiot|baylibre]
-        local remote="aiot"
+        local remote="rita"
         local output=$(git remote | grep baylibre)
         [ -n "${output}" ] && remote="baylibre"
 
