@@ -147,6 +147,9 @@ function main {
                 fi
             fi
 
+            # Clean output directory
+            rm -rvf "${aosp}/${mtk_binaries_path}/"*
+
             # Copy binaries
             out_dir=$(out_dir "${mtk_config}" "${mode}")
             cp -r "${out_dir}/"* "${aosp}/${mtk_binaries_path}"
