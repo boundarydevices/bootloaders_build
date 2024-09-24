@@ -147,8 +147,8 @@ function main {
                 fi
             fi
 
-            # Clean output directory
-            rm -rvf "${aosp}/${mtk_binaries_path}/"*
+            # Clean optee-ta output directory
+            rm -rvf "${aosp}/${mtk_binaries_path}/optee-ta/"*
 
             # Copy binaries
             out_dir=$(out_dir "${mtk_config}" "${mode}")
