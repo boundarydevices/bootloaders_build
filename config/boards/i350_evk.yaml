@@ -1,6 +1,6 @@
 plat: mt8365
 
-mmcboot:
+mtk_boot:
   ddr_size_max: 122880 # 120 Ko
   spl_size_max: 133120 # 130 Ko
 

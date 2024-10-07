@@ -25,8 +25,8 @@ function build_ddr_loader {
     local mode="${3:-release}"
     local out_dir=$(out_dir "$1" "${mode}")
     local ddr_out_dir="build/${mtk_plat}/release"
-    local ddr_size_max=$(config_value "$1" mmcboot.ddr_size_max)
-    local spl_size_max=$(config_value "$1" mmcboot.spl_size_max)
+    local ddr_size_max=$(config_value "$1" mtk_boot.ddr_size_max)
+    local spl_size_max=$(config_value "$1" mtk_boot.spl_size_max)
     local ddr_size=0
 
     [ -z "${ddr_size_max}" ] && error_usage_exit "DDR size max not set in $1"

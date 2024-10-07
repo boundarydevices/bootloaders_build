@@ -6,7 +6,7 @@ set -o pipefail
 
 SRC=$(dirname "$(readlink -e "$0")")
 source "${SRC}/build_bl31.sh"
-source "${SRC}/build_mmcboot.sh"
+source "${SRC}/build_mtk_boot.sh"
 source "${SRC}/build_optee.sh"
 source "${SRC}/build_uboot.sh"
 source "${SRC}/secure.sh"
@@ -34,7 +34,7 @@ function bootloaders_factory_image {
                              -k "${bootloaders_key_dir}" \
                              "${out_dir}/bootloaders-factory.img"
 
-    mmcboot_create_factory_binary "${config}" "${mode}"
+    mtk_boot_create_factory_binary "${config}" "${mode}"
 }
 
 function build_bootloaders {

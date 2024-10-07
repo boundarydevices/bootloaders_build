@@ -14,7 +14,7 @@ function da_create_binary {
     local mtk_plat=$(config_value "$1" plat)
     local mode="$2"
     local out_dir="$3"
-    local spl_size_max=$(config_value "$1" mmcboot.spl_size_max)
+    local spl_size_max=$(config_value "$1" mtk_boot.spl_size_max)
     local ddr_loader_bin="${out_dir}/ddr-loader.bin"
     local uboot_spl_out_bin="${UBOOT}/spl/u-boot-spl.bin"
 

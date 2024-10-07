@@ -205,7 +205,7 @@ function daa_supported {
     [ -a "${toolauth_gfh_config_pss}" ] && [ -a "${bbchips_pss}" ]
 }
 
-function sign_mmcboot {
+function sign_mtk_boot {
     local secure_config="$1"
     local input="$2"
     local output="$3"

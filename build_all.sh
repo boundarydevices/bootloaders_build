@@ -7,7 +7,7 @@ set -o pipefail
 SRC=$(dirname "$(readlink -e "$0")")
 source "${SRC}/build_bootloaders.sh"
 source "${SRC}/build_da.sh"
-source "${SRC}/build_mmcboot.sh"
+source "${SRC}/build_mtk_boot.sh"
 source "${SRC}/utils.sh"
 
 function build_all {
@@ -23,7 +23,7 @@ function build_all {
     build_da "$@"
 
     # MMC BOOT
-    build_mmcboot "$@"
+    build_mtk_boot "$@"
 
     # Bootloaders: BL31, OP-TEE, U-Boot
     build_bootloaders "$@"

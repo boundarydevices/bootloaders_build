@@ -59,7 +59,7 @@ function build_uboot_spl {
     local clean="$2"
     local mode="$3"
     local da="$4"
-    local spl_size_max=$(config_value "$1" mmcboot.spl_size_max)
+    local spl_size_max=$(config_value "$1" mtk_boot.spl_size_max)
     local mtk_spl_defconfig=$(config_value "$1" uboot.spl_defconfig)
     local uboot_spl_out_bin="${UBOOT}/spl/u-boot-spl.bin"
     local uboot_spl_size=0
