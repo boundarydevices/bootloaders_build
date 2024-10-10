@@ -245,7 +245,7 @@ function sign_da {
 
 function resign_da {
     local secure_config="$1"
-    local mtk_plat="$2"
+    local secure_plat="$2"
     local resign_da_py="${SECURE_TOOLS}/secure_chip_tools/resign_da.py"
     local bbchips_pss="${secure_config}/bbchips_pss.ini"
     local mtk_all_da="${SECURE_TOOLS}/configs/MTK_AllInOne_DA_Win.bin"
@@ -254,7 +254,7 @@ function resign_da {
     cp "${bbchips_pss}" bbchips_pss.ini
     sed -i 's|DA_KEY|'${KEYS}/${DA_KEY}'|g' bbchips_pss.ini
 
-    python "${resign_da_py}" "${mtk_all_da}" "${mtk_plat^^}" bbchips_pss.ini all "${MTK_DA_SIGNED}"
+    python "${resign_da_py}" "${mtk_all_da}" "${secure_plat^^}" bbchips_pss.ini all "${MTK_DA_SIGNED}"
     rm bbchips_pss.ini
 }
 
@@ -310,7 +310,7 @@ function add_secure_boot_files {
     local package="$1"
     local secure_config="$2"
     local board="$3"
-    local mtk_plat="$4"
+    local secure_plat="$4"
 
     # add efuse configuration
     update_efuse_xml "${secure_config}"
@@ -331,7 +331,7 @@ function add_secure_boot_files {
         zip -ju "${package}" "${DA_KEY}"
 
         # MTK_AllInOne_DA signed
-        resign_da "${secure_config}" "${mtk_plat}"
+        resign_da "${secure_config}" "${secure_plat}"
         zip -ju "${package}" "${MTK_DA_SIGNED}"
         rm "${MTK_DA_SIGNED}"
 
@@ -345,7 +345,7 @@ function add_secure_boot_files {
 
 function generate_secure_package {
     local board=$(board_name "$1")
-    local mtk_plat=$(config_value "$1" plat)
+    local secure_plat=$(config_value "$1" secure.plat)
     local secure_config=$(get_secure_config "$1")
     local out_dir="$2"
     local package="secure_${board}.zip"
@@ -384,7 +384,7 @@ function generate_secure_package {
 
     # add Secure Boot files
     if [ -n "${secure_config}" ]; then
-        add_secure_boot_files "${package}" "${secure_config}" "${board}" "${mtk_plat}"
+        add_secure_boot_files "${package}" "${secure_config}" "${board}" "${secure_plat}"
     else
         warning "Secure boot not supported for ${board}"
     fi

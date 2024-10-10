@@ -11,20 +11,21 @@ source "${SRC}/utils.sh"
 DDR_LOADER="${ROOT}/ddr-loader"
 
 function clean_ddr {
-    local mtk_plat="$1"
-    if [ -d "build/${mtk_plat}" ]; then
-        rm -r "build/${mtk_plat}"
+    local ddr_loader_plat="$1"
+    if [ -d "build/${ddr_loader_plat}" ]; then
+        rm -r "build/${ddr_loader_plat}"
     fi
 }
 
 function build_ddr_loader {
     local board=$(board_name "$1")
-    local mtk_plat=$(config_value "$1" plat)
-    local libatf_a="${LIBATF}/build-${board}/src/${mtk_plat}/libatf.a"
+    local ddr_loader_plat=$(config_value "$1" ddr_loader.plat)
+    local libatf_plat=$(config_value "$1" libatf.plat)
+    local libatf_a="${LIBATF}/build-${board}/src/${libatf_plat}/libatf.a"
     local clean="${2:-false}"
     local mode="${3:-release}"
     local out_dir=$(out_dir "$1" "${mode}")
-    local ddr_out_dir="build/${mtk_plat}/release"
+    local ddr_out_dir="build/${ddr_loader_plat}/release"
     local ddr_size_max=$(config_value "$1" mtk_boot.ddr_size_max)
     local spl_size_max=$(config_value "$1" mtk_boot.spl_size_max)
     local ddr_size=0
@@ -44,11 +45,11 @@ function build_ddr_loader {
     fi
 
     pushd "${DDR_LOADER}"
-    [[ "${clean}" == true ]] && clean_ddr "${mtk_plat}"
+    [[ "${clean}" == true ]] && clean_ddr "${ddr_loader_plat}"
 
     aarch64_env
 
-    make E=0 PLAT="${mtk_plat}" \
+    make E=0 PLAT="${ddr_loader_plat}" \
          DEBUG=0 LOG_LEVEL=10 \
          BL2_CFLAGS="-DSPL_OFFSET=\"${ddr_size_max}\" -DSPL_SIZE=\"${spl_size_max}\"" \
          BL2_LDFLAGS="--whole-archive" \

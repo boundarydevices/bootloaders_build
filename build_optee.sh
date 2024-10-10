@@ -29,9 +29,8 @@ function build_ta {
 }
 
 function get_optee_flags {
-    local mtk_plat=$(config_value "$1" plat)
+    local optee_plat=$(config_value "$1" optee.plat)
     local flags=$(config_value "$1" optee.flags)
-    local board=$(config_value "$1" optee.board)
     local rpmb=$(config_value "$1" optee.rpmb)
     local mode="$2"
     local -n optee_flags_ref="$3"
@@ -63,12 +62,7 @@ function get_optee_flags {
     flags+=" CFG_TZDRAM_START=0x43200000 CFG_TZDRAM_SIZE=0x00a00000"
     flags+=" CFG_HMAC_64_1024_RANGE=y"
     flags+=" CFG_DT=y"
-
-    if [ -n "${board}" ]; then
-        flags+=" PLATFORM=mediatek-${board}"
-    else
-        flags+=" PLATFORM=mediatek-${mtk_plat}"
-    fi
+    flags+=" PLATFORM=mediatek-${optee_plat}"
 
     optee_flags_ref="${flags}"
 }
@@ -140,7 +134,6 @@ function build_android_ta {
 }
 
 function build_optee {
-    local mtk_plat=$(config_value "$1" plat)
     local clean="${2:-false}"
     local mode="${3:-release}"
     local out_dir=$(out_dir "$1" "${mode}")
@@ -161,7 +154,7 @@ function build_optee {
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
 
     pushd "${OPTEE}"
-    [[ "${clean}" == true ]] && clean_optee "${mtk_plat}"
+    [[ "${clean}" == true ]] && clean_optee
 
     aarch64_env
 
