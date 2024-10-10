@@ -1,0 +1,27 @@
+mtk_boot:
+  ddr_size_max: 307200 # 300 Ko
+  spl_size_max: 716800 # 700 Ko
+
+ddr_loader:
+  plat: mt8390
+
+libatf:
+  plat: mt8390
+
+libbase:
+  plat: mt8188
+
+bl31:
+  plat: mt8188
+
+optee:
+  plat: mt8188
+  flags: CFG_ARM64_core=y ta-targets=ta_arm64 CFG_DRAM_SIZE=0xc0000000 CFG_CORE_HEAP_SIZE=131072
+
+uboot:
+  plat: mt8390
+  spl_defconfig: mt8390_evk_android_spl_defconfig
+  defconfig: mt8390_evk_android_defconfig
+
+android:
+  binaries_path: device/mediatek/boards-binaries/i700_evk
