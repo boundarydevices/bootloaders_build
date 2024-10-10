@@ -37,7 +37,7 @@ function build_bl31 {
 
     bl31_flags+=" E=0"
     bl31_flags+=" PLAT=${bl31_plat}"
-    bl31_flags+=" NEED_BL32=yes SPD=opteed"
+    bl31_flags+=" NEED_BL32=no SPD=opteed"
     bl31_flags+=" ENABLE_LTO=1"
 
     if [[ "${mode}" == "debug" ]]; then
