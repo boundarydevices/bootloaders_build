@@ -15,8 +15,8 @@ source "${SRC}/utils.sh"
 function bootloaders_factory_image {
     local config="$1"
     local mode="$2"
+    local bootloaders_its="$3"
     local out_dir=$(out_dir "$1" "${mode}")
-    local its="${BUILD}/config/u-boot/bootloaders-factory.its"
     local uboot_spl_dtb_out_bin="${out_dir}/u-boot-spl.dtb"
     local bootloaders_key_dir=""
 
@@ -26,7 +26,7 @@ function bootloaders_factory_image {
 
     get_bootloaders_key_dir "$1" bootloaders_key_dir
 
-    cp "${BUILD}/config/u-boot/bootloaders-factory.its" "${out_dir}/bootloaders.its"
+    cp "${bootloaders_its}" "${out_dir}/bootloaders.its"
 
     "${UBOOT}/tools/mkimage" -r \
                              -f "${out_dir}/bootloaders.its" \
@@ -39,7 +39,9 @@ function bootloaders_factory_image {
 
 function build_bootloaders {
     local mode="$3"
+    local uboot_plat=$(config_value "$1" uboot.plat)
     local out_dir=$(out_dir "$1" "${mode}")
+    local bootloaders_its=""
 
     display_current_build "$1" "bootloaders" "${mode}"
 
@@ -52,9 +54,11 @@ function build_bootloaders {
 
     # Generate bootloaders image
     if [[ "${mode}" == "factory" ]]; then
-        bootloaders_factory_image "$1" "${mode}"
+        bootloaders_its="${BUILD}/config/u-boot/${uboot_plat}/bootloaders-factory.its"
+        bootloaders_factory_image "$1" "${mode}" "${bootloaders_its}"
     else
-        cp "${BUILD}/config/u-boot/bootloaders.its" "${out_dir}/bootloaders.its"
+        bootloaders_its="${BUILD}/config/u-boot/${uboot_plat}/bootloaders.its"
+        cp "${bootloaders_its}" "${out_dir}/bootloaders.its"
         "${UBOOT}/tools/mkimage" -f "${out_dir}/bootloaders.its" \
                                  "${out_dir}/bootloaders-${mode}.img"
     fi
