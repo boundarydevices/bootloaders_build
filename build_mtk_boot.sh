@@ -11,7 +11,6 @@ source "${SRC}/secure.sh"
 source "${SRC}/utils.sh"
 
 function mtk_boot_create_factory_binary {
-    local mtk_plat=$(config_value "$1" plat)
     local secure_config=$(get_secure_config "$1")
     local mode="$2"
     local out_dir=$(out_dir "$1" "${mode}")
@@ -49,7 +48,6 @@ function mtk_boot_create_factory_binary {
 }
 
 function mtk_boot_create_binary {
-    local mtk_plat=$(config_value "$1" plat)
     local out_dir="$2"
     local ddr_loader_bin="${out_dir}/ddr-loader.bin"
     local uboot_spl_out_bin="${UBOOT}/spl/u-boot-spl.bin"

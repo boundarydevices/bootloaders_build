@@ -38,7 +38,6 @@ function bootloaders_factory_image {
 }
 
 function build_bootloaders {
-    local mtk_plat=$(config_value "$1" plat)
     local mode="$3"
     local out_dir=$(out_dir "$1" "${mode}")
 
