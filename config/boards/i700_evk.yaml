@@ -16,7 +16,7 @@ bl31:
 
 optee:
   plat: mt8188
-  flags: CFG_ARM64_core=y ta-targets=ta_arm64 CFG_DRAM_SIZE=0xc0000000 CFG_CORE_HEAP_SIZE=131072
+  flags: CFG_ARM64_core=y CFG_CORE_DYN_SHM=n ta-targets=ta_arm64 CFG_DRAM_SIZE=0xc0000000 CFG_CORE_HEAP_SIZE=131072
 
 uboot:
   plat: mt8390
