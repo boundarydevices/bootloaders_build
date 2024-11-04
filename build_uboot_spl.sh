@@ -34,20 +34,30 @@ function merge_uboot_spl_config {
     local board="$2"
     local mode="$3"
     local da="$4"
-    local mode_fragment="${BUILD}/config/u-boot/spl-${mode}.config"
-    local board_fragment="${config_root}/u-boot/${board}.config"
+    local mode_da_fragment="${BUILD}/config/u-boot/${mode}/spl-da.config"
+    local mode_board_da_fragment="${config_root}/u-boot/${board}/${mode}/spl-da.config"
+    local mode_mtk_boot_fragment="${BUILD}/config/u-boot/${mode}/spl-mtk-boot.config"
+    local mode_board_mtk_boot_fragment="${config_root}/u-boot/${board}/${mode}/spl-mtk-boot.config"
     declare -a configs
+
+    configs+=("${BUILD}/config/u-boot/spl.config")
 
     if [[ "${da}" == true ]]; then
         configs+=("${BUILD}/config/u-boot/spl-da.config")
-    else
-        if [ -a "${mode_fragment}" ]; then
-            configs+=("${mode_fragment}")
+        if [ -a "${mode_da_fragment}" ]; then
+            configs+=("${mode_da_fragment}")
         fi
-    fi
-
-    if [ -a "${board_fragment}" ]; then
-        configs+=("${board_fragment}")
+        if [ -a "${mode_board_da_fragment}" ]; then
+            configs+=("${mode_board_da_fragment}")
+        fi
+    else
+        configs+=("${BUILD}/config/u-boot/spl-mtk-boot.config")
+        if [ -a "${mode_mtk_boot_fragment}" ]; then
+            configs+=("${mode_mtk_boot_fragment}")
+        fi
+        if [ -a "${mode_board_mtk_boot_fragment}" ]; then
+            configs+=("${mode_board_mtk_boot_fragment}")
+        fi
     fi
 
     scripts/kconfig/merge_config.sh .config "${configs[*]}"
@@ -60,7 +70,7 @@ function build_uboot_spl {
     local mode="$3"
     local da="$4"
     local spl_size_max=$(config_value "$1" mtk_boot.spl_size_max)
-    local mtk_spl_defconfig=$(config_value "$1" uboot.spl_defconfig)
+    local mtk_defconfig=$(config_value "$1" uboot.defconfig)
     local uboot_spl_out_bin="${UBOOT}/spl/u-boot-spl.bin"
     local uboot_spl_size=0
     local build="uboot SPL"
@@ -92,7 +102,7 @@ function build_uboot_spl {
     fi
 
     # generate defconfig
-    make "${mtk_spl_defconfig}"
+    make "${mtk_defconfig}"
     merge_uboot_spl_config "${config_root}" "${board}" "${mode}" "${da}"
 
     make -j"$(nproc)" spl/u-boot-spl

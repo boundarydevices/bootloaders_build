@@ -18,21 +18,21 @@ function merge_config {
     local mode="${1}"
     local board="${2}"
     local config_root="${3}"
-    local mode_fragment="${BUILD}/config/u-boot/${mode}.config"
-    local board_fragment="${config_root}/u-boot/${board}.config"
+    local mode_android_fragment="${BUILD}/config/u-boot/${mode}/android.config"
+    local mode_board_android_fragment="${config_root}/u-boot/${board}/${mode}/android.config"
     declare -a configs
 
-    if [ -a "${mode_fragment}" ]; then
-        configs+=("${mode_fragment}")
+    configs+=("${BUILD}/config/u-boot/android.config")
+
+    if [ -a "${mode_android_fragment}" ]; then
+        configs+=("${mode_android_fragment}")
     fi
 
-    if [ -a "${board_fragment}" ]; then
-        configs+=("${board_fragment}")
+    if [ -a "${mode_board_android_fragment}" ]; then
+        configs+=("${mode_board_android_fragment}")
     fi
 
-    if [[ "${configs[*]}" ]]; then
-        scripts/kconfig/merge_config.sh .config "${configs[*]}"
-    fi
+    scripts/kconfig/merge_config.sh .config "${configs[*]}"
 }
 
 function build_uboot {

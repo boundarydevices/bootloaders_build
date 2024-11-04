@@ -20,8 +20,7 @@ optee:
 
 uboot:
   plat: mt8390
-  spl_defconfig: mt8390_evk_android_spl_defconfig
-  defconfig: mt8390_evk_android_defconfig
+  defconfig: mt8390_evk_defconfig
 
 android:
   binaries_path: device/mediatek/boards-binaries/i700_evk
