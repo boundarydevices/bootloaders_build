@@ -1,0 +1,81 @@
+/*
+ * U-Boot uImage source file with multiple kernels, ramdisks and FDT blobs
+ */
+
+/dts-v1/;
+
+/ {
+        description = "FIT image";
+        #address-cells = <1>;
+
+        images {
+                uboot {
+                        description = "U-Boot";
+                        type = "standalone";
+                        /* Warning: os field voluntary not specified */
+                        /* We don't want let spl_load_simple_fit spl_fit_append_fdt */
+                        arch = "arm64";
+                        compression = "none";
+                        load = <0x41000000>;
+                        entry = <0x41000000>;
+                        data = /incbin/("u-boot.bin");
+			hash-1 {
+				algo = "sha1";
+			};
+                        signature {
+				algo = "sha1,rsa2048";
+				key-name-hint = "bootloaders";
+			};
+                };
+
+                atf {
+                        description = "ARM Trusted Firmware";
+                        type = "firmware";
+                        os = "arm-trusted-firmware";
+                        arch = "arm64";
+                        compression = "none";
+                        entry = <0x54601000>;
+                        load = <0x54601000>;
+                        data = /incbin/("bl31.bin");
+			hash-1 {
+				algo = "sha1";
+			};
+                        signature {
+				algo = "sha1,rsa2048";
+				key-name-hint = "bootloaders";
+			};
+                };
+
+                optee {
+                        description = "OP-TEE";
+                        type = "firmware";
+                        os = "tee";
+                        arch = "arm64";
+                        compression = "none";
+                        load = <0x431fffe4>;
+                        entry = <0x43200000>;
+                        data = /incbin/("tee.bin");
+                        hash-1 {
+				algo = "sha1";
+			};
+                        signature {
+				algo = "sha1,rsa2048";
+				key-name-hint = "bootloaders";
+			};
+                };
+        };
+
+        configurations {
+                default = "conf";
+                conf {
+                        description = "mt8370";
+                        firmware = "atf";
+                        loadables = "optee", "uboot";
+                        signature {
+				algo = "sha1,rsa2048";
+				key-name-hint = "bootloaders";
+                                sign-images = "firmware", "loadables";
+			};
+                };
+        };
+};
