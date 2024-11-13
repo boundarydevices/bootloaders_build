@@ -3,10 +3,10 @@ mtk_boot:
   spl_size_max: 716800 # 700 Ko
 
 ddr_loader:
-  plat: mt8390
+  plat: mt8188
 
 libatf:
-  plat: mt8390
+  plat: mt8188
 
 libbase:
   plat: mt8188
