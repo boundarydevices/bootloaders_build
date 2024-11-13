@@ -60,7 +60,7 @@ function get_optee_flags {
     esac
 
     flags+=" CFG_TZDRAM_START=0x43200000 CFG_TZDRAM_SIZE=0x00a00000"
-    flags+=" CFG_HMAC_64_1024_RANGE=y"
+    flags+=" CFG_HMAC_64_1024_RANGE=y CFG_TA_OPTEE_CORE_API_COMPAT_1_1=y"
     flags+=" CFG_DT=y"
     flags+=" PLATFORM=mediatek-${optee_plat}"
 
