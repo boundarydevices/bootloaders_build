@@ -23,7 +23,7 @@ uboot:
   defconfig: mt8365_evk_defconfig
 
 android:
-  binaries_path: device/mediatek/boards-binaries/i350_evk
+  binaries_path: vendor/mediatek/prebuilts/boards/i350_evk
 
 secure:
   plat: mt8365

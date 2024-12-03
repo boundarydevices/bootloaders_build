@@ -23,4 +23,4 @@ uboot:
   defconfig: mt8390_evk_defconfig
 
 android:
-  binaries_path: device/mediatek/boards-binaries/i700_evk
+  binaries_path: vendor/mediatek/prebuilts/boards/i700_evk
