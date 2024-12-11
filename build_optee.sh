@@ -130,6 +130,10 @@ function build_android_ta {
         cp "${android_ta}" "${out_dir}/optee-ta/"
     done
 
+    # copy TA dev kit
+    ! [ -d "${out_dir}/optee-ta/export-ta_arm64" ] && mkdir -p "${out_dir}/optee-ta/export-ta_arm64"
+    cp -r "${TA_DEV_KIT_DIR}/host_include" "${out_dir}/optee-ta/export-ta_arm64/"
+
     clear_vars
 }
 
