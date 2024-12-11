@@ -16,8 +16,8 @@
                         /* We don't want let spl_load_simple_fit spl_fit_append_fdt */
                         arch = "arm64";
                         compression = "none";
-                        load = <0x4c000000>;
-                        entry = <0x4c000000>;
+                        load = <0x41000000>;
+                        entry = <0x41000000>;
                         data = /incbin/("u-boot.bin");
 			hash-1 {
 				algo = "sha1";
