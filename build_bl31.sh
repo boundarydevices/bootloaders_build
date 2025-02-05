@@ -39,6 +39,7 @@ function build_bl31 {
     bl31_flags+=" PLAT=${bl31_plat}"
     bl31_flags+=" NEED_BL32=no SPD=opteed"
     bl31_flags+=" ENABLE_LTO=1"
+    bl31_flags+=" LIBBASE=${libbase_a}"
 
     if [[ "${mode}" == "debug" ]]; then
         bl31_flags+=" DEBUG=1 log_level=20"
