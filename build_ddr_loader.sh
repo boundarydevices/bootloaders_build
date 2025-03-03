@@ -18,10 +18,8 @@ function clean_ddr {
 }
 
 function build_ddr_loader {
-    local board=$(board_name "$1")
     local ddr_loader_plat=$(config_value "$1" ddr_loader.plat)
-    local libatf_plat=$(config_value "$1" libatf.plat)
-    local libatf_a="${LIBATF}/build-${board}/src/${libatf_plat}/libatf.a"
+    local libatf=""
     local clean="${2:-false}"
     local mode="${3:-release}"
     local out_dir=$(out_dir "$1" "${mode}")
@@ -37,12 +35,7 @@ function build_ddr_loader {
 
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
 
-    if [[ "${clean}" == true ]]; then
-        build_libatf "$1" true "${mode}"
-    else
-        # check if libatf has been compiled
-        ! [ -a "${libatf_a}" ] && build_libatf "$1" false "${mode}"
-    fi
+    get_libatf "$1" "${clean}" "${mode}" libatf
 
     pushd "${DDR_LOADER}"
     [[ "${clean}" == true ]] && clean_ddr "${ddr_loader_plat}"
@@ -53,7 +46,7 @@ function build_ddr_loader {
          DEBUG=0 LOG_LEVEL=10 \
          BL2_CFLAGS="-DSPL_OFFSET=\"${ddr_size_max}\" -DSPL_SIZE=\"${spl_size_max}\"" \
          BL2_LDFLAGS="--whole-archive" \
-         BL2_LIBS="${libatf_a}" \
+         BL2_LIBS="${libatf}" \
          bl2
 
     pushd "${ddr_out_dir}"

@@ -19,21 +19,21 @@ function clean_bl31 {
 }
 
 function build_bl31 {
-    local board=$(board_name "$1")
     local bl31_plat=$(config_value "$1" bl31.plat)
-    local libatf_plat=$(config_value "$1" libatf.plat)
     local libbase_plat=$(config_value "$1" libbase.plat)
     local out_dir=$(out_dir "$1" "${mode}")
     local clean="$2"
     local mode="$3"
-    local libatf_a="${LIBATF}/build-${board}/src/${libatf_plat}/libatf.a"
     local libbase_a="${ROOT}/libbase-prebuilts/${libbase_plat}/libbase.a"
+    local libatf=""
     local bl31_flags=""
     local bl31_out_dir=""
 
     display_current_build "$1" "BL31" "${mode}"
 
     ! [ -d "${out_dir}" ] && mkdir -p "${out_dir}"
+
+    get_libatf "$1" "${clean}" "${mode}" libatf
 
     bl31_flags+=" E=0"
     bl31_flags+=" PLAT=${bl31_plat}"
@@ -53,19 +53,12 @@ function build_bl31 {
         bl31_out_dir="${ATF}/build/${bl31_plat}/release"
     fi
 
-    if [[ "${clean}" == true ]]; then
-        build_libatf "$1" true "${mode}"
-    else
-        # check if libatf has been compiled
-        ! [ -a "${libatf_a}" ] && build_libatf "$1" false "${mode}"
-    fi
-
     pushd "${ATF}"
     [[ "${clean}" == true ]] && clean_bl31 "${bl31_plat}"
 
     arm-none_env
 
-    make BL31_LIBS="${libatf_a} ${libbase_a}" ${bl31_flags} bl31
+    make BL31_LIBS="${libatf} ${libbase_a}" ${bl31_flags} bl31
     cp "${bl31_out_dir}/bl31.bin" "${out_dir}"
 
     clear_vars

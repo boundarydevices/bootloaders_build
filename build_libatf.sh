@@ -31,6 +31,29 @@ function clean_libatf {
     fi
 }
 
+function get_libatf {
+    local board=$(board_name "$1")
+    local clean="$2"
+    local mode="$3"
+    local -n libatf_a_ref="$4"
+    local libatf_plat=$(config_value "$1" libatf.plat)
+    local libatf_a=""
+
+    if [ -d "${LIBATF}" ]; then
+        libatf_a="${LIBATF}/build-${board}/src/${libatf_plat}/libatf.a"
+        if [[ "${clean}" == true ]]; then
+            build_libatf "$1" true "${mode}"
+        else
+            # check if libatf has been compiled
+            ! [ -a "${libatf_a}" ] && build_libatf "$1" false "${mode}"
+        fi
+    else
+        libatf_a="${ROOT}/libatf-prebuilt/${board}/libatf.a"
+    fi
+
+    libatf_a_ref="${libatf_a}"
+}
+
 function build_libatf {
     local board=$(board_name "$1")
     local mtk_build="build-${board}"
