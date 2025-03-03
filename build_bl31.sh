@@ -24,7 +24,7 @@ function build_bl31 {
     local out_dir=$(out_dir "$1" "${mode}")
     local clean="$2"
     local mode="$3"
-    local libbase_a="${ROOT}/libbase-prebuilts/${libbase_plat}/libbase.a"
+    local libbase_a="${ROOT}/libbase-prebuilt/${libbase_plat}/libbase.a"
     local libatf=""
     local bl31_flags=""
     local bl31_out_dir=""
