@@ -36,8 +36,13 @@ function get_libatf {
     local clean="$2"
     local mode="$3"
     local -n libatf_a_ref="$4"
+    local libatf_board=$(config_value "$1" libatf.board)
     local libatf_plat=$(config_value "$1" libatf.plat)
     local libatf_a=""
+
+    if [ ! -z "${libatf_board}" ]; then
+        board=${libatf_board}
+    fi
 
     if [ -d "${LIBATF}" ]; then
         libatf_a="${LIBATF}/build-${board}/src/${libatf_plat}/libatf.a"
