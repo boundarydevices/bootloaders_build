@@ -1,0 +1,27 @@
+mtk_boot:
+  ddr_size_max: 307200 # 300 Ko
+  spl_size_max: 716800 # 700 Ko
+
+ddr_loader:
+  plat: mt8188
+
+libatf:
+  board: i510_evk
+  plat: mt8188
+
+libbase:
+  plat: mt8188
+
+bl31:
+  plat: mt8188
+
+optee:
+  plat: mt8188
+  flags: CFG_ARM64_core=y CFG_CORE_DYN_SHM=n ta-targets=ta_arm64 CFG_DRAM_SIZE=0xc0000000 CFG_CORE_HEAP_SIZE=131072
+
+uboot:
+  plat: mt8370
+  defconfig: mt8370_tungsten_defconfig
+
+android:
+  binaries_path: vendor/mediatek/prebuilts/boards/tungsten700
