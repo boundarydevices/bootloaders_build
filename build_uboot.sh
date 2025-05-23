@@ -91,6 +91,7 @@ function build_uboot {
     make -j"$(nproc)"
 
     ./scripts/get_default_envs.sh > "${out_dir}/u-boot-initial-${mode}-env"
+    ./tools/mkenvimage -s 0x2000 -p 0 -o ${out_dir}/u-boot-env-${mode}.bin ${out_dir}/u-boot-initial-${mode}-env
     cp u-boot.bin "${out_dir}"
 
     unset ARCH
